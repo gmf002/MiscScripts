@@ -74,11 +74,11 @@ Function Get-RandomHeight {
     $inches = 0;
 
     if ($feet -eq 7) {
-        $inches = Get-Random -Minimum 1 -Maximum 6
+        $inches = Get-Random -Minimum 0 -Maximum 6
     } elseif($feet -eq 5) {
         $inches = Get-Random -Minimum 8 -Maximum 12
     } else {
-        $inches = Get-Random -Minimum 1 -Maximum 12
+        $inches = Get-Random -Minimum 0 -Maximum 12
     }
 
     return ($feet * 12) + $inches
