@@ -149,7 +149,7 @@ Function Get-ChineseZodiacSign {
         [datetime]$Birthday
     )
 
-    $chineseNewYear = [Globalization.ChineseLunisolarCalendar]::new().ToDateTime([DateTime]::Now.Year, 1, 1, 0,0,0,0)
+    $chineseNewYear = [Globalization.ChineseLunisolarCalendar]::new().ToDateTime($Birthday.Year, 1, 1, 0,0,0,0)
     $signs = @("Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Sheep", "Monkey", "Rooster", "Dog")
     $signNumber = ($Birthday.Year + 9) % 12
     $previousSignNumber = 0
