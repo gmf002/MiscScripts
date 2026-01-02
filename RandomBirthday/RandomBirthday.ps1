@@ -149,6 +149,7 @@ Function Get-ChineseZodiacSign {
         [datetime]$Birthday
     )
 
+    $chineseNewYear = [Globalization.ChineseLunisolarCalendar]::new().ToDateTime([DateTime]::Now.Year, 1, 1, 0,0,0,0)
     $signs = @("Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Sheep", "Monkey", "Rooster", "Dog")
     $signNumber = ($Birthday.Year + 9) % 12
     $previousSignNumber = 0
@@ -159,12 +160,8 @@ Function Get-ChineseZodiacSign {
         $previousSignNumber = $signNumber - 1
     }
 
-    if($Birthday.Month -eq 1 -or ($Birthday.Month -eq 2 -and $Birthday.Day -le 20)) {
-        if($Birthday.Month -eq 1 -and $Birthday.Month -lt 21) {
-            return $signs[$previousSignNumber]
-        } else {
-            return "{0} or {1} *`n`n   * Date falls within January 21 and February 20, please lookup to confirm" -f $signs[$signNumber], $signs[$previousSignNumber]
-        }
+    if($Birthday -lt $chineseNewYear) {
+        return $signs[$previousSignNumber]
     } else {
         return $signs[$signNumber]
     }
