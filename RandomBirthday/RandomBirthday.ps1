@@ -36,6 +36,7 @@ Function Get-RandomDay {
         $MaxDays = 30
     }
 
+    # Maximum is exclusive, add one day BEFORE calling
     $i = Get-Random -Minimum 1 -Maximum (++$MaxDays)
 
     return "{0}" -f $i
@@ -46,11 +47,7 @@ Function IsLeapYear {
         [int]$Year
     )
 
-    if($Year % 400 -eq 0 -or ($Year % 4 -eq 0 -and $Year % 100 -ne 0)) {
-        return $true
-    }
-
-    return $false
+    return ($Year % 400 -eq 0 -or ($Year % 4 -eq 0 -and $Year % 100 -ne 0))
 }
 
 
@@ -66,7 +63,7 @@ Function Get-RandomBirthday {
     $hour = Get-Random -Maximum 24
     $minute = Get-Random -Minimum 1 -Maximum 60
 
-    return Get-Date -Year $year -Month $month -Day $day -Hour $hour -Minute $minute 
+    return Get-Date -Year $year -Month $month -Day $day -Hour $hour -Minute $minute
 }
 
 Function Get-RandomHeight {
@@ -76,7 +73,7 @@ Function Get-RandomHeight {
     if ($feet -eq 7) {
         $inches = Get-Random -Minimum 0 -Maximum 6
     } elseif($feet -eq 5) {
-        $inches = Get-Random -Minimum 8 -Maximum 12
+        $inches = Get-Random -Minimum 1 -Maximum 12
     } else {
         $inches = Get-Random -Minimum 0 -Maximum 12
     }
@@ -162,9 +159,9 @@ Function Get-ChineseZodiacSign {
 
     if($Birthday -lt $chineseNewYear) {
         return $signs[$previousSignNumber]
-    } else {
-        return $signs[$signNumber]
     }
+
+    return $signs[$signNumber]
 }
 
 Function New-Birthday {
@@ -173,22 +170,14 @@ Function New-Birthday {
         [int]$MaxYear = 2100
     )
 
-    $disclaimer = @"
-Zodiac signs are based on static lookups and rough calculations.
-These dates shift by year based on solar and lunar positions.
-If you want to be certain, use an Internet service or calculate it yourself.
-"@
-
     $birthday = Get-RandomBirthday -MinYear $MinYear -MaxYear $MaxYear
     $zodiacSign = Get-ZodiacSign -Birthday $birthday
     $chineseZodiacSign = Get-ChineseZodiacSign -Birthday $birthday
-    
+
     Write-Host
     Write-Host ('Birthday            : {0:F}' -f $birthday)
     Write-Host ('Zodiac Sign         : {0}' -f $zodiacSign)
     Write-Host ('Chinese Zodiac Sign : {0}' -f $chineseZodiacSign)
-    Write-Host
-    Write-Host $disclaimer
     Write-Host
 }
 
