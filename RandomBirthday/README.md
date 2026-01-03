@@ -43,10 +43,10 @@ If you want to be certain, use an Internet service or calculate it yourself.
 
 The height is first generate in feet as a random number between 5 and 7 inclusive.
 *  If feet is 7, inches are randomly generated with a maximum of 5.
-*  If feet is 5, inches are ramdomly generated with a minimum of 8 and maximum of 11.
+*  If feet is 5, inches are ramdomly generated with a minimum of 1 and maximum of 11.
 *  Anything else (aka feet of 6), use a maximum of 11.
 
-Four formulas are used: Hamwi64, Devine74, Robinson83, and Miller83.  For each one, a minimum weight is calculated use the female value, and a max weight is calculated use the male value.  The min and max weights of each are averaged.  The averaged min and max weights are then used as the minimum and maximum input for the built-in Get-Random function to provide a random weight.
+Four formulas are used to generate weight: Hamwi64, Devine74, Robinson83, and Miller83.  For each one, a minimum weight is calculated using the female formuias, and a max weight is calculated using the male formualas.  The min and max weights of each are averaged, and a random number of 0-19 added (the weights felt low for an athletic individual, which most RPG characters are in the games I play).  The averaged min and max weights are then used as the minimum and maximum input for the built-in Get-Random function to provide a random weight.
 
 ```PowerShell
 New-HumanDimensions
@@ -57,3 +57,25 @@ Example Output
 Maximum Height : 188 cm or 6' 2"<br>
 Average Weight : 63.6 kg or 140.2 pounds
 </blockquote>
+
+### Get zodiac signs
+
+#### Western
+
+```PowerShell
+Get-ZodiacSign (Get-Date "1/1/1900")
+```
+
+> Capricorn
+
+#### Chinese
+
+The Chinese calendar in DotNet only accepts years from 1901 to 2100, inclusive. This is used to determine the day of the Chinese New Year.
+
+If a year outside of that range is provided, the calculation will still run, but a dat between Jan 21 and Feb 20 will possibly be incorrect because teh Chinese New Year is not known.
+
+```PowerShell
+Get-ChineseZodiacSign (Get-Date "1/1/1900")
+```
+
+> Rat
