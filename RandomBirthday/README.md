@@ -72,10 +72,28 @@ Get-ZodiacSign (Get-Date "1/1/1900")
 
 The Chinese calendar in DotNet only accepts years from 1901 to 2100, inclusive. This is used to determine the day of the Chinese New Year.
 
-If a year outside of that range is provided, the calculation will still run, but a dat between Jan 21 and Feb 20 will possibly be incorrect because teh Chinese New Year is not known.
+If a year outside of that range is provided, the calculation will still run, but a date between Jan 21 and Feb 20 will produce two signs with a suggestion to look it up elsewhere.
+
+Example 1
 
 ```PowerShell
-Get-ChineseZodiacSign (Get-Date "1/1/1900")
+Get-ChineseZodiacSign (Get-Date "1/27/1901")
 ```
 
+Output
+
 > Rat
+
+Example 2
+
+```PowerShell
+Get-ChineseZodiacSign (Get-Date "1/27/1900")
+```
+
+Output
+
+<blockquote>
+Rat or Pig *<br>
+<br>
+   * Date falls within January 21 and February 20, please lookup to confirm  
+</blockquote>
