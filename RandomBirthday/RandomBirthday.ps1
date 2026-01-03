@@ -146,7 +146,13 @@ Function Get-ChineseZodiacSign {
         [datetime]$Birthday
     )
 
-    $chineseNewYear = [Globalization.ChineseLunisolarCalendar]::new().ToDateTime($Birthday.Year, 1, 1, 0,0,0,0)
+    # The ChineseLunisolarCalendar in dotnet only supports years between 1901 and 2100
+    # so we need to handle those outside that range differently
+    [datetime]$chineseNewYear = [datetime]::MinValue
+    if($Birthday.Year -ge 1901 -and $Birthday.Year -le 2100) {
+        $chineseNewYear = [Globalization.ChineseLunisolarCalendar]::new().ToDateTime($Birthday.Year, 1, 1, 0,0,0,0)
+    }
+
     $signs = @("Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Sheep", "Monkey", "Rooster", "Dog")
     $signNumber = ($Birthday.Year + 9) % 12
     $previousSignNumber = 0
@@ -157,8 +163,20 @@ Function Get-ChineseZodiacSign {
         $previousSignNumber = $signNumber - 1
     }
 
-    if($Birthday -lt $chineseNewYear) {
-        return $signs[$previousSignNumber]
+    if($chineseNewYear -ne [datetime]::MinValue) {
+        if($Birthday -lt $chineseNewYear) {
+            return $signs[$previousSignNumber]
+        } else {
+            return $signs[$signNumber]
+        }
+    }
+
+    if($Birthday.Month -eq 1 -or ($Birthday.Month -eq 2 -and $Birthday.Day -le 20)) {
+        if($Birthday.Month -eq 1 -and $Birthday.Day -lt 21) {
+            return $signs[$previousSignNumber]
+        } else {
+            return "{0} or {1} *`n`n   * Date falls within January 21 and February 20, please lookup to confirm" -f $signs[$signNumber], $signs[$previousSignNumber]
+        }
     }
 
     return $signs[$signNumber]
